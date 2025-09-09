@@ -1,0 +1,21 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main   # se ejecuta cuando haces push a la rama main
+  pull_request:
+    types: [opened, synchronize, reopened] # también en PRs
+
+jobs:
+  sonarqube:
+    name: SonarQube
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # evita clones superficiales para mejor análisis
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
